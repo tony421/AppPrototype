@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApplicationDbContext.cs" />
+    <Compile Remove="DesignTimeDbContextFactory.cs" />
+    <Compile Remove="Migrations\20190704003908_InitialMigration.cs" />
+    <Compile Remove="Migrations\20190704004414_UpdateMigration.cs" />
+    <Compile Remove="Migrations\20190704005056_InitialMigration.cs" />
+    <Compile Remove="Migrations\20190705065654_InitialMaster.cs" />
+    <Compile Remove="Migrations\Master\20190705065814_InitialMaster.cs" />
+    <Compile Remove="Migrations\Master\20190705065917_InitialMaster.cs" />
+    <Compile Remove="Migrations\Master\20190708055945_testing.cs" />
+    <Compile Remove="Migrations\Production\20190708053627_InitialProduciton.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Constant\App.Constant.csproj" />
+  </ItemGroup>
+
+</Project>
