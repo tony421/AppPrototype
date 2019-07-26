@@ -11,7 +11,7 @@ namespace App.DatabaseContext
     {
         public MasterDbContext CreateMasterContext(IConfiguration config)
         {
-            if (config != null)
+            if (config != null)xxxx
             {
                 string connString = config.GetConnectionString(ApplicationConstant.DatabaseContext.MASTER_CONNECTION_STRING);
                 if (!string.IsNullOrWhiteSpace(connString))
