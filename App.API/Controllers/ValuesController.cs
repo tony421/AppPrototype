@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using App.DatabaseContext;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace App.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
     public class ValuesController : ControllerBase
     {
         private MasterDbContext _masterContext;
@@ -25,6 +24,8 @@ namespace App.API.Controllers
 
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public ActionResult<IEnumerable<string>> GetMaster()
         {
             var names = _masterContext.Corporates.Select(s => s.Name)?.ToArray();
@@ -32,35 +33,12 @@ namespace App.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public ActionResult<IEnumerable<string>> GetProduction()
         {
             var names = _prodContext.Stores.Select(s => s.Name)?.ToArray();
             return names;
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
