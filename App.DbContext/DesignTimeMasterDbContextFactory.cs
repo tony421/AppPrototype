@@ -1,4 +1,4 @@
-﻿using App.Constant;
+﻿using App.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +19,7 @@ namespace App.DatabaseContext
 
         public override string GetConnectionString()
         {
-            return ApplicationConstant.DatabaseContext.MASTER_CONNECTION_STRING;
+            return DbContextConstants.MASTER_CONNECTION_STRING;
         }
     }
 }

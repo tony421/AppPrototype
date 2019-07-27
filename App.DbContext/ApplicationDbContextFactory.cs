@@ -1,4 +1,4 @@
-﻿using App.Constant;
+﻿using App.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -13,7 +13,7 @@ namespace App.DatabaseContext
         {
             if (config != null)
             {
-                string connString = config.GetConnectionString(ApplicationConstant.DatabaseContext.MASTER_CONNECTION_STRING);
+                string connString = config.GetConnectionString(DbContextConstants.MASTER_CONNECTION_STRING);
                 if (!string.IsNullOrWhiteSpace(connString))
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<MasterDbContext>();
@@ -28,7 +28,7 @@ namespace App.DatabaseContext
 
         public ProductionDbContext CreateProductionContext(IConfiguration config)
         {
-            return CreateProductionContext(config, ApplicationConstant.DatabaseContext.PRODUCTION_MASTER_DATABASE);
+            return CreateProductionContext(config, DbContextConstants.PRODUCTION_MASTER_DATABASE);
         }
         public ProductionDbContext CreateProductionContext(IConfiguration config, string databaseName)
         {
@@ -36,7 +36,7 @@ namespace App.DatabaseContext
             {
                 if (!string.IsNullOrWhiteSpace(databaseName))
                 {
-                    string productionConnFormat = config.GetConnectionString(ApplicationConstant.DatabaseContext.PRODUCTION_FORMAT_CONNECTION_STRING);
+                    string productionConnFormat = config.GetConnectionString(DbContextConstants.PRODUCTION_FORMAT_CONNECTION_STRING);
                     if (!string.IsNullOrWhiteSpace(productionConnFormat))
                     {
                         string connString = string.Format(productionConnFormat, databaseName);

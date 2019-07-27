@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Constant\App.Constant.csproj" />
+    <ProjectReference Include="..\App.Constant\App.Constants.csproj" />
   </ItemGroup>
 
 </Project>

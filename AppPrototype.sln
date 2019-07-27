@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.DAL", "App.DAL\App.DAL.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.API", "App.API\App.API.csproj", "{8AF395CD-10BF-4D91-A2C6-83ABBC176E31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ViewModel", "App.ViewModels\App.ViewModel.csproj", "{F9B9F30A-C61C-444F-B5C4-2CE1C0AC31FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ViewModels", "App.ViewModels\App.ViewModels.csproj", "{F9B9F30A-C61C-444F-B5C4-2CE1C0AC31FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.DatabaseContext", "App.DbContext\App.DatabaseContext.csproj", "{D60012F7-02A1-4A6D-8CF9-790E696771C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Constant", "App.Constant\App.Constant.csproj", "{65EE942D-2DDA-428C-ADC1-04662ECD08BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Constants", "App.Constant\App.Constants.csproj", "{65EE942D-2DDA-428C-ADC1-04662ECD08BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

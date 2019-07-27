@@ -1,4 +1,4 @@
-﻿using App.Constant;
+﻿using App.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -17,12 +17,12 @@ namespace App.DatabaseContext
 
         public TContext CreateDbContext(string[] args)
         {
-            string environmentName = Environment.GetEnvironmentVariable(ApplicationConstant.EnvironmentVariableNames.ASPNETCORE_ENV);
+            string environmentName = Environment.GetEnvironmentVariable(EnvironmentVariableConstants.ASPNETCORE_ENV);
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory()) // Need to install package "Microsoft.Extensions.Configuration.FileExtensions"
-                .AddJsonFile(@Directory.GetCurrentDirectory() + ApplicationConstant.APP_SETTING_PATH, true) // Need to install package "Microsoft.Extensions.Configuration.Json"
-                .AddJsonFile(@Directory.GetCurrentDirectory() + string.Format(ApplicationConstant.APP_SETTING_PATH, environmentName), true)
+                .AddJsonFile(@Directory.GetCurrentDirectory() + AppSettingConstants.APP_SETTING_PATH, true) // Need to install package "Microsoft.Extensions.Configuration.Json"
+                .AddJsonFile(@Directory.GetCurrentDirectory() + string.Format(AppSettingConstants.APP_SETTING_PATH, environmentName), true)
                 .Build();
 
             string connectionString = configuration.GetConnectionString(GetConnectionString());
