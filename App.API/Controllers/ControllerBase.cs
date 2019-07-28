@@ -11,7 +11,7 @@ namespace App.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     [Route("api/[controller]/[action]")]
     public class ControllerBase : Controller
     {

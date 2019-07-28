@@ -24,8 +24,6 @@ namespace App.API.Controllers
 
         // GET api/values
         [HttpGet]
-        [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
         public ActionResult<IEnumerable<string>> GetMaster()
         {
             var names = _masterContext.Corporates.Select(s => s.Name)?.ToArray();
@@ -34,7 +32,6 @@ namespace App.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
         public ActionResult<IEnumerable<string>> GetProduction()
         {
             var names = _prodContext.Stores.Select(s => s.Name)?.ToArray();

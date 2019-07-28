@@ -39,7 +39,6 @@ namespace App.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Register(AccountVM vm)
         {
             var appUser = new ApplicationUser()
@@ -65,7 +64,6 @@ namespace App.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Login(AccountVM vm)
         {
             try
