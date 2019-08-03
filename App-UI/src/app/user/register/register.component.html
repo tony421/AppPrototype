@@ -1,0 +1,38 @@
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="row" style="height: 450px;">
+            <div class="col-md-12">
+                <h1>Registration</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
+            <div class="form-group required">
+                <label>Email</label>
+                <input class="form-control" formControlName="Email">
+                <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.required">Required!</label>
+                <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid!</label>
+            </div>
+            <div formGroupName="Passwords">
+                <div class="form-group required">
+                    <label>Password</label>
+                    <input type="password" class="form-control" formControlName="Password">
+                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">Required!</label>
+                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">Too Short!</label>
+                </div>
+                <div class="form-group required">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" formControlName="ConfirmPassword">
+                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">Required!</label>
+                    <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Mismatched!</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8 offset-md-2">
+                    <button type="submit" class="btn btn-lg btn-primary btn-block" [disabled]="!service.formModel.valid">Sign Up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

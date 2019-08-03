@@ -39,7 +39,7 @@ namespace App.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(AccountVM vm)
+        public async Task<object> Register(AccountVM vm)
         {
             var appUser = new ApplicationUser()
             {
