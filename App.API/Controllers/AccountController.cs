@@ -39,7 +39,7 @@ namespace App.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<object> Register(AccountVM vm)
+        public async Task<IActionResult> Register(AccountVM vm)
         {
             var appUser = new ApplicationUser()
             {
@@ -49,7 +49,8 @@ namespace App.API.Controllers
 
             try
             {
-                var result = await _userManager.CreateAsync(appUser, vm.Password);
+                IdentityResult result = await _userManager.CreateAsync(appUser, vm.Password);
+                
                 if (result.Succeeded)
                     return Ok(result);
                 else
@@ -77,7 +78,7 @@ namespace App.API.Controllers
                     tokenDescriptor.Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserId", user.Id)
                     });
-                    tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(5);
+                    tokenDescriptor.Expires = DateTime.UtcNow.AddHours(24);
                     tokenDescriptor.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
                     var tokenHandler = new JwtSecurityTokenHandler();
@@ -95,6 +96,35 @@ namespace App.API.Controllers
             {
                 return BadRequest(new { msg = ex.Message });
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProfile()
+        {
+            try
+            {
+                var user =  await _userManager.FindByIdAsync(this.GetUserId());
+                //var user = await _userManager.GetUserAsync(this.User);
+
+                if (user != null)
+                {
+                    return Ok(new { data = user });
+                }
+                else
+                {
+                    return BadRequest(new { message = "User is not found." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        public string GetUserId()
+        {
+            string userId = this.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            return userId;
         }
     }
 }

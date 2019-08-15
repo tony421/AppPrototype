@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-register',
+selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss']
 })
@@ -12,6 +13,7 @@ export class RegisterComponent implements OnInit {
     constructor(private service: UserService, private toast: ToastrService) { }
 
     ngOnInit() {
+        
     }
 
     onSubmit() {
@@ -23,15 +25,12 @@ export class RegisterComponent implements OnInit {
                 }
                 else {
                     res.errors.forEach(i => {
-                        this.toast.error(i.code + ': ' + i.description);
+                        this.toast.error(i.code, ':', i.description);
                     });
                 }
-            },
-            err => {
-                console.log('Opps! error...');
-                err.error.errors.forEach(i => {
-                    this.toast.error(i.code + ': ' + i.description);
-                });
+            }
+            , err => {
+                this.toast.warning(err);
             }
         );
     }
