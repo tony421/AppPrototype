@@ -9,5 +9,6 @@ namespace App.API.Options
     {
         public string SecurityKey { get; set; }
         public string ClientUrl { get; set; }
+        public int TokenExpiration { get; set; }
     }
 }

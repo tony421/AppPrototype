@@ -52,14 +52,14 @@ namespace App.API.Controllers
                 IdentityResult result = await _userManager.CreateAsync(appUser, vm.Password);
                 
                 if (result.Succeeded)
-                    return Ok(result);
+                    return AppOkRequest(result);
                 else
-                    return BadRequest(result);
+                    return AppBadRequest(result);
 
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return AppBadRequest(ex);
             }
         }
 
@@ -78,23 +78,23 @@ namespace App.API.Controllers
                     tokenDescriptor.Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserId", user.Id)
                     });
-                    tokenDescriptor.Expires = DateTime.UtcNow.AddHours(24);
+                    tokenDescriptor.Expires = DateTime.UtcNow.AddHours(_jwtAuthenticationOptions.TokenExpiration);
                     tokenDescriptor.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                     var token = tokenHandler.WriteToken(securityToken);
 
-                    return Ok(new { token });
+                    return AppOkRequest("", token);
                 }
                 else
                 {
-                    return BadRequest(new { message = "Email or password is incorrect." });
+                    return AppBadRequest("Login credientials are not correct.");
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { msg = ex.Message });
+                return AppBadRequest(ex);
             }
         }
 
@@ -108,16 +108,16 @@ namespace App.API.Controllers
 
                 if (user != null)
                 {
-                    return Ok(new { data = user });
+                    return AppOkRequest(user);
                 }
                 else
                 {
-                    return BadRequest(new { message = "User is not found." });
+                    return AppBadRequest("User is not found.");
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return AppBadRequest(ex);
             }
         }
 

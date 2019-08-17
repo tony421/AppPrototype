@@ -24,36 +24,40 @@ export class AppErrorInterceptor implements HttpInterceptor {
             // A client-side or network error occurred. Handle it accordingly.
             msg = httpError.error.message;
         } else {
+            statusCode = httpError.status;
             if (httpError.error != null && httpError.error.errors != null) {
+                // If a request could reach the API end-point.
+                // An error emitted by the server must be in this format "httpError.error.errors"
                 httpError.error.errors.forEach(i => {
-                    msg += i.code + ':' + i.description + ' | ';
+                    if (msg != '') msg += ' | ';
+                    if (i.code != null && i.code != '') msg += '[' + i.code + ']';
+                    if (i.description != null && i.description != '') msg += i.description;
                 });
             }
             else {
-                statusCode = httpError.status;
+                msg = 'The request might not reach the API end-point! ';
                 if (statusCode == 401) // Unauthorized
                 {
-                    msg = 'Unauthorized!';
+                    msg += 'Unauthorized! ';
                     this.router.navigateByUrl('/user/login');
                 }
                 else if (statusCode == 400) // Bad Request
                 {
-                    msg = httpError.message;
+                    msg += 'Bad Request! ';
                     this.router.navigateByUrl('');
                 }
                 else if (statusCode == 404) // Page not found
                 {
-                    msg = httpError.message;
+                    msg += 'Page Not Found! ';
                     this.router.navigateByUrl('');
                 }
                 else if (statusCode == 500) // Internal Error
                 {
-                    msg = httpError.message;
+                    msg += 'Internal Error! ';
                     this.router.navigateByUrl('');
                 }
-                else {
-                    msg = httpError.message;
-                }
+
+                msg += httpError.message;
             }
         }
 

@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
                     this.service.formModel.reset();
                 }
                 else {
-                    res.errors.forEach(i => {
+                    res.messages.forEach(i => {
                         this.toast.error(i.code, ':', i.description);
                     });
                 }

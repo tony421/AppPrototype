@@ -20,12 +20,12 @@ export class LoginComponent implements OnInit {
     onSubmit() {
         this.service.login().subscribe(
             (res: any) => {
-                localStorage.setItem("token", res.token);
+                localStorage.setItem("token", res.data);
                 this.router.navigateByUrl("/user/profile");
                 //this.toast.info(res.token);
             }
             , err => {
-                console.log('Opps! error...', err);
+                this.toast.warning(err);
                 // err.error.errors.forEach(i => {
                 //     this.toast.error(i.code + ': ' + i.description);
                 // });
