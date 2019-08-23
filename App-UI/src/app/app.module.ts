@@ -16,13 +16,22 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AppErrorInterceptor } from './app-error-intercecptor';
 import { AppErrorHandler } from './app-error-handler';
 
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faCannabis, faArrowLeft, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { SidebarComponent } from './nav/sidebar/sidebar.component';
+import { TopbarComponent } from './nav/topbar/topbar.component';
+//import { far } from '@fortawesome/free-regular-svg-icons';
+//import { fab } from '@fortawesome/free-brands-svg-icons';
+
 @NgModule({
     declarations: [
         AppComponent,
         UserComponent,
         RegisterComponent,
         LoginComponent,
-        ProfileComponent
+        ProfileComponent,
+        SidebarComponent,
+        TopbarComponent
     ],
     imports: [
         BrowserModule,
@@ -30,7 +39,8 @@ import { AppErrorHandler } from './app-error-handler';
         AppRoutingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        ToastrModule.forRoot()
+        FontAwesomeModule,
+        ToastrModule.forRoot(),
     ],
     providers: [
         UserService,
@@ -40,4 +50,8 @@ import { AppErrorHandler } from './app-error-handler';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(faLibrary: FaIconLibrary) {
+        faLibrary.addIcons(faCannabis, faArrowLeft, faCoffee);
+    }
+}
