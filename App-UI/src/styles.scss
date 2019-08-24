@@ -91,7 +91,7 @@ ul ul a {
     text-align: center;
     background: #7386D5;
     cursor: pointer;
-    transition: all 0.4s;
+    transition: all 0.3s;
     
     &:hover {
         color: #7386D5;
@@ -106,7 +106,7 @@ ul ul a {
     height: 100vh; // Viewport height
     background: #7386D5;
     color: #fff;
-    transition: all 0.4s;
+    transition: all 0.3s;
     margin-left: -250px;
     z-index: $z-index-sidebar;
 

@@ -4,15 +4,16 @@ import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './user/register/register.component';
 import { LoginComponent } from './user/login/login.component';
 import { ProfileComponent } from './user/profile/profile.component';
+import { AuthGuard } from './auth/auth.guard';
 
 
 const routes: Routes = [
-    { path: '', redirectTo: 'user/register', pathMatch: 'full' },
+    { path: '', data: { breadcrumb: "Home" }, redirectTo: 'user/register', pathMatch: 'full' },
     {
-        path: 'user', component: UserComponent, children: [
-            { path: 'register', component: RegisterComponent },
-            { path: 'login', component: LoginComponent },
-            { path: 'profile', component: ProfileComponent },
+        path: 'user', data: { breadcrumb: "User" }, component: UserComponent, children: [
+            { path: 'register', data: { breadcrumb: "Register" }, component: RegisterComponent },
+            { path: 'login', data: { breadcrumb: "Login" }, component: LoginComponent },
+            { path: 'profile', data: { breadcrumb: "Profile" }, component: ProfileComponent, canActivate: [AuthGuard] },
         ]
     }
 ];

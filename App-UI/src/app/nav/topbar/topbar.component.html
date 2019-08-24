@@ -18,6 +18,9 @@
                         <a class="nav-link" [routerLink]="['/user/login']">Sign In</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/user/profile']">Profile</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">Page</a>
                     </li>
                     <li class="nav-item">
@@ -30,9 +33,13 @@
 
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Library</a></li>
-            <li class="breadcrumb-item active">Data</li>
+            <li *ngFor="let breadcrumb of breadcrumbs$ | async; let isLast = last" class="breadcrumb-item" [ngClass]="{'active': isLast}"
+                aria-current="page">
+                <a *ngIf="!isLast; else tplLastRoute" [routerLink]="[breadcrumb.url]">
+                    {{ breadcrumb.label }}
+                </a>
+                <ng-template #tplLastRoute>{{ breadcrumb.label }}</ng-template>
+            </li>
         </ol>
     </nav>
 </div>
