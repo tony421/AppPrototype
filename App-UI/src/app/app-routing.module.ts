@@ -13,7 +13,7 @@ const routes: Routes = [
         path: 'user', data: { breadcrumb: "User" }, component: UserComponent, children: [
             { path: 'register', data: { breadcrumb: "Register" }, component: RegisterComponent },
             { path: 'login', data: { breadcrumb: "Login" }, component: LoginComponent },
-            { path: 'profile', data: { breadcrumb: "Profile" }, component: ProfileComponent, canActivate: [AuthGuard] },
+            { path: 'profile', data: { breadcrumb: "Profile", permittedRoles: ["Any"] }, component: ProfileComponent, canActivate: [AuthGuard] },
         ]
     }
 ];

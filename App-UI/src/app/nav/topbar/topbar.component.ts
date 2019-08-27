@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { Breadcrumb } from '../../interfaces/breadcrumb';
+import { CastingService } from 'src/app/services/casting.service';
 
 @Component({
     selector: 'app-topbar',
@@ -11,7 +12,10 @@ import { Breadcrumb } from '../../interfaces/breadcrumb';
     encapsulation: ViewEncapsulation.None
 })
 export class TopbarComponent implements OnInit {
-    constructor(private toast: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
+    constructor(private toast: ToastrService
+        , private router: Router
+        , private activatedRoute: ActivatedRoute
+        , private castingService: CastingService) { }
 
     // Returning an overable object which can be used within *ngFor with Async pipe
     breadcrumbs$ = this.router.events.pipe(
@@ -26,8 +30,10 @@ export class TopbarComponent implements OnInit {
 
     buildBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: Array<Breadcrumb> = []): Array<Breadcrumb> {
         // If no routeConfig is avalailable we are on the root path
-        const label = route.routeConfig ? route.routeConfig.data['breadcrumb'] : 'Home';
         const path = route.routeConfig ? route.routeConfig.path : '';
+        const routeData = route.routeConfig ? this.castingService.GetRouteData(route.routeConfig) : null;
+        
+        const label = routeData ? routeData.breadcrumb : 'Home';        
 
         // Rebuild the next url from the previous one
         const nextUrl = `${url}${path}/`;

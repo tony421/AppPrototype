@@ -26,15 +26,18 @@ namespace App.API.Controllers
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
         private readonly JwtAuthenticationOptions _jwtAuthenticationOptions;
-        
+        private readonly IdentityOptions _identityOptions;
+
         public AccountController(IConfiguration config, MasterDbContext masterDbContext
             , UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager
-            , IOptions<JwtAuthenticationOptions> jwtAuthenticationOptions)
+            , IOptions<JwtAuthenticationOptions> jwtAuthenticationOptions
+            , IOptions<IdentityOptions> identityOptions)
         {
             _masterDbContext = masterDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtAuthenticationOptions = jwtAuthenticationOptions.Value;
+            _identityOptions = identityOptions.Value;
         }
 
         [HttpPost]
@@ -72,11 +75,16 @@ namespace App.API.Controllers
                 var user = await _userManager.FindByEmailAsync(vm.Email);
                 if (user != null && await _userManager.CheckPasswordAsync(user, vm.Password))
                 {
+                    // Getting the user role
+                    var role = await _userManager.GetRolesAsync(user);
+
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtAuthenticationOptions.SecurityKey));
 
                     var tokenDescriptor = new SecurityTokenDescriptor();
                     tokenDescriptor.Subject = new ClaimsIdentity(new Claim[] {
-                        new Claim("UserId", user.Id)
+                        //new Claim("UserId", user.Id),
+                        new Claim(_identityOptions.ClaimsIdentity.UserIdClaimType, user.Id),
+                        new Claim(_identityOptions.ClaimsIdentity.RoleClaimType, role.FirstOrDefault() ?? "User")
                     });
                     tokenDescriptor.Expires = DateTime.UtcNow.AddHours(_jwtAuthenticationOptions.TokenExpiration);
                     tokenDescriptor.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -123,7 +131,7 @@ namespace App.API.Controllers
 
         public string GetUserId()
         {
-            string userId = this.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            string userId = this.User.Claims.FirstOrDefault(c => c.Type == _identityOptions.ClaimsIdentity.UserIdClaimType)?.Value;
             return userId;
         }
     }

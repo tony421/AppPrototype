@@ -4,8 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
 import { AppRoutingModule } from './app-routing.module';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faCannabis, faArrowLeft, faCoffee, faBars } from '@fortawesome/free-solid-svg-icons';
+
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 import { RegisterComponent } from './user/register/register.component';
@@ -16,10 +18,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AppErrorInterceptor } from './app-error-intercecptor';
 import { AppErrorHandler } from './app-error-handler';
 
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faCannabis, faArrowLeft, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { TopbarComponent } from './nav/topbar/topbar.component';
+import { SharedLocalStorageService } from './services/shared-local-storage.service';
+import { CastingService } from './services/casting.service';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 
@@ -44,6 +46,8 @@ import { TopbarComponent } from './nav/topbar/topbar.component';
     ],
     providers: [
         UserService,
+        SharedLocalStorageService,
+        CastingService,
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: AppErrorInterceptor, multi: true },        
@@ -52,6 +56,6 @@ import { TopbarComponent } from './nav/topbar/topbar.component';
 })
 export class AppModule {
     constructor(faLibrary: FaIconLibrary) {
-        faLibrary.addIcons(faCannabis, faArrowLeft, faCoffee);
+        faLibrary.addIcons(faCannabis, faArrowLeft, faCoffee, faBars);
     }
 }

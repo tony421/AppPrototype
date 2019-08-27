@@ -36,14 +36,19 @@ export class AppErrorInterceptor implements HttpInterceptor {
             }
             else {
                 msg = 'The request might not reach the API end-point! ';
-                if (statusCode == 401) // Unauthorized
+                if (statusCode == 400) // Bad Request
+                {
+                    msg += 'Bad Request! ';
+                    this.router.navigateByUrl('');
+                }
+                else if (statusCode == 401) // Unauthorized
                 {
                     msg += 'Unauthorized! ';
                     this.router.navigateByUrl('/user/login');
                 }
-                else if (statusCode == 400) // Bad Request
+                else if (statusCode == 403) // Forbidden
                 {
-                    msg += 'Bad Request! ';
+                    msg += 'Forbidden Area! ';
                     this.router.navigateByUrl('');
                 }
                 else if (statusCode == 404) // Page not found
