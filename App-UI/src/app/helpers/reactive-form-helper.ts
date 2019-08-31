@@ -12,7 +12,10 @@ export abstract class FormGroupTypeSafe<T> extends FormGroup {
     public abstract getSafe(propertyFunction: (typeVal: T) => any): AbstractControl;
     public abstract setControlSafe(propertyFunction: (typeVal: T) => any, control: AbstractControl): void;
     public abstract resetSafe(typeVal: T): void;
-    public abstract patchValueSafe(propertyFunction: (typeVal: T) => any, value: any): void;
+    public abstract patchValueSafe(propertyFunction: (typeVal: T) => any, value: any, options?: {
+        onlySelf?: boolean;
+        emitEvent?: boolean;
+    }): void;
     //If you need more function implement declare them here but implement them on FormBuilderTypeSafe.group instantiation.
 }
 
@@ -35,6 +38,7 @@ export class FormBuilderTypeSafe extends FormBuilder {
             //let properties = propertyFunction.toString().match(/(?![. ])([a-z0-9_]+)(?=[};.])/gi).splice(1);
 
             var r = properties.join(".");
+            //console.info('Property name:', getPropertyName);
             return r;
         }
 
@@ -56,10 +60,12 @@ export class FormBuilderTypeSafe extends FormBuilder {
                 gr.reset(typeVal);
             };
 
-            gr.patchValueSafe = (propertyFunction: (typeVal: T) => any, value: any): void => {
+            gr.patchValueSafe = (propertyFunction: (typeVal: T) => any, value: any, options?: {
+                onlySelf?: boolean;
+                emitEvent?: boolean;
+            }): void => {
                 let getStr = getPropertyName(propertyFunction);
-                console.info('patching', getStr, value);
-                gr.patchValue({ [getStr]: value });
+                gr.get(getStr).patchValue(value, options);
             }
 
             //implement more functions as needed           

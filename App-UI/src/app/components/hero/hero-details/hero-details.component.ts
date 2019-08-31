@@ -153,15 +153,13 @@ export class HeroDetailsComponent implements OnInit, OnChanges {
 
     cancel() { this.onSucceeded.emit(false); }
 
-    //patch() { this.heroForm.patchValueSafe(x => x.name, "xXx"); }
-    patch() { this.heroForm.patchValue({name: 'xXx', power: 'strength', sidekick: true}); }
-    //patch() { this.heroForm.value.name = "xXx"; }
+    patch() { this.heroForm.patchValueSafe(x => x.name, "xXx"); }
+    //patch() { this.heroForm.get('name').patchValue('xXx', { onlySelf: true, eventEmit: false }); }
 
     logNameChange() {
         /* TypeSafe Reactive Forms Changes */
-        //old code
         const nameControl = this.heroForm.getSafe(x => x.name);
-        nameControl.valueChanges.forEach(
+        nameControl.valueChanges.subscribe(
             (value: string) => this.nameChangeLog.push(value)
         );
     }
