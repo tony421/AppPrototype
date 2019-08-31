@@ -11,6 +11,7 @@ export class AppErrorInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        //console.info('AppErrorInterceptor is interceping the request');
         return next.handle(req.clone()).pipe(
             catchError(this.handleError)
         );

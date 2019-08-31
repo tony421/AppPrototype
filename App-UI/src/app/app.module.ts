@@ -7,6 +7,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faCannabis, faArrowLeft, faCoffee, faBars } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilderTypeSafe } from './helpers/reactive-form-helper';
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
@@ -22,6 +24,12 @@ import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { TopbarComponent } from './nav/topbar/topbar.component';
 import { SharedLocalStorageService } from './services/shared-local-storage.service';
 import { CastingService } from './services/casting.service';
+import { HeroComponent } from './components/hero/hero.component';
+import { HeroListComponent } from './components/hero/hero-list/hero-list.component';
+import { HeroDetailsComponent } from './components/hero/hero-details/hero-details.component';
+import { HeroService } from './services/hero.service';
+import { LoadingService } from './services/loading.service';
+import { AppLoadingInterceptor } from './app-loading-interceptor';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 
@@ -33,7 +41,10 @@ import { CastingService } from './services/casting.service';
         LoginComponent,
         ProfileComponent,
         SidebarComponent,
-        TopbarComponent
+        TopbarComponent,
+        HeroComponent,
+        HeroListComponent,
+        HeroDetailsComponent
     ],
     imports: [
         BrowserModule,
@@ -43,14 +54,25 @@ import { CastingService } from './services/casting.service';
         BrowserAnimationsModule,
         FontAwesomeModule,
         ToastrModule.forRoot(),
+        NgxLoadingModule.forRoot({
+            animationType: ngxLoadingAnimationTypes.threeBounce,
+            backdropBorderRadius: '4px',
+            primaryColour: '#dd0031',
+            secondaryColour: '#006ddd',
+            tertiaryColour: '#008000',
+        })
     ],
     providers: [
+        FormBuilderTypeSafe,
         UserService,
         SharedLocalStorageService,
         CastingService,
-        { provide: ErrorHandler, useClass: AppErrorHandler },
+        HeroService,
+        LoadingService,
+        //{ provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: AppErrorInterceptor, multi: true },        
+        { provide: HTTP_INTERCEPTORS, useClass: AppErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AppLoadingInterceptor, multi: true },
     ],
     bootstrap: [AppComponent]
 })

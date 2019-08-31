@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'app-profile',
@@ -17,7 +18,9 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userService.getProfile().subscribe(
+        this.userService.getProfile()
+            .pipe(delay(2000))
+            .subscribe(
             (res: any) => {
                 console.info(res);
                 this.vm.userId = res.data.id;

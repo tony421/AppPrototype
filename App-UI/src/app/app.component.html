@@ -1,6 +1,6 @@
 <div class="wrapper">
     <!-- Sidebar -->
-    <app-sidebar></app-sidebar>    
+    <app-sidebar></app-sidebar>
 
     <div class="container-fluid">
         <!-- Topbar -->
@@ -10,6 +10,14 @@
         <div id="content">
             <div class="container-fluid">
                 <router-outlet></router-outlet>
+
+                <!-- without running change-detection explicitly, binding [show] to isLoading$ causes the error -->
+                <ngx-loading [show]="isLoading$ | async"></ngx-loading>
+
+                <!-- <button [disabled]="isLoading$ | async">Loading</button>
+                {{isLoading$ | async}}
+                <div *ngIf="isLoading$ | async; else finishLoading">Loading....</div>
+                <ng-template #finishLoading><div>Finish loading</div></ng-template> -->
             </div>
         </div>
     </div>
