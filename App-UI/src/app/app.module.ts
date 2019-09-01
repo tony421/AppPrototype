@@ -58,8 +58,8 @@ import { AppLoadingInterceptor } from './app-loading-interceptor';
             animationType: ngxLoadingAnimationTypes.threeBounce,
             backdropBorderRadius: '4px',
             primaryColour: '#dd0031',
-            secondaryColour: '#006ddd',
-            tertiaryColour: '#008000',
+            secondaryColour: '#008000',
+            tertiaryColour: '#006ddd',
         })
     ],
     providers: [
