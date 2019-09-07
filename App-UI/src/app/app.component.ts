@@ -1,6 +1,8 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { LoadingService } from './services/loading.service';
 import { Subject } from 'rxjs';
+import { Router, NavigationStart, NavigationCancel, NavigationError, NavigationEnd, ChildActivationStart, ChildActivationEnd, ActivationStart, ActivationEnd } from '@angular/router';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -11,7 +13,23 @@ export class AppComponent {
     title = 'App Components';
     isLoading$ = this.loadingService.isLoading;
 
-    constructor(private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+    constructor(private route: Router, private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+        this.route.events.subscribe(event => {
+            switch (true) {
+                case event instanceof NavigationStart:
+                    console.info("NavigationStart");
+                    this.loadingService.show();
+                    break;
+                case event instanceof NavigationCancel:
+                case event instanceof NavigationError:
+                case event instanceof NavigationEnd:
+                    console.info("NavigationEnd");
+                    setTimeout(e => this.loadingService.hide(), 500);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     ngAfterViewChecked() {

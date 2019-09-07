@@ -7,13 +7,19 @@ import { delay } from 'rxjs/operators';
 })
 export class LoadingService {
     isLoading = new Subject<Boolean>();
+    loadingCounter = 0;
 
     show() {
         console.info('Page is loading');
         this.isLoading.next(true);
+        this.loadingCounter++;
     }
-    hide() {
-        console.info('Page is hiding');
-        this.isLoading.next(false);
+    hide() {        
+        this.loadingCounter--;
+        if (this.loadingCounter <= 0) {
+            console.info('Page is hiding');
+            this.isLoading.next(false);
+            this.loadingCounter = 0;
+        }
     }
 }
