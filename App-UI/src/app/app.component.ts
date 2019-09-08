@@ -17,14 +17,14 @@ export class AppComponent {
         this.route.events.subscribe(event => {
             switch (true) {
                 case event instanceof NavigationStart:
-                    console.info("NavigationStart");
+                    //console.info("NavigationStart");
                     this.loadingService.show();
                     break;
                 case event instanceof NavigationCancel:
                 case event instanceof NavigationError:
                 case event instanceof NavigationEnd:
-                    console.info("NavigationEnd");
-                    setTimeout(e => this.loadingService.hide(), 500);
+                    //console.info("NavigationEnd");
+                    setTimeout(e => this.loadingService.hide(), 350);
                     break;
                 default:
                     break;
