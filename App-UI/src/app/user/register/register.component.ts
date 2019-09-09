@@ -25,12 +25,17 @@ export class RegisterComponent implements OnInit {
                 }
                 else {
                     res.messages.forEach(i => {
-                        this.toast.error(i.code, ':', i.description);
+                        let msg;
+                        if (i.code)
+                            msg = '[' + i.code + '] ' + i.description;
+                        else
+                            msg = i.description;
+                        this.toast.warning(msg);
                     });
                 }
             }
             , err => {
-                this.toast.warning(err);
+                this.toast.error(err);
             }
         );
     }

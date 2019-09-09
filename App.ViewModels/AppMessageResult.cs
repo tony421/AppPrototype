@@ -8,10 +8,12 @@ namespace App.ViewModels
     {
         public AppMessageResult()
         {
-
+            this.Code = string.Empty;
+            this.Description = string.Empty;
         }
         public AppMessageResult(string messageDescription)
         {
+            this.Code = string.Empty;
             this.Description = messageDescription;
         }
         public AppMessageResult(string messageCode, string messageDescription)

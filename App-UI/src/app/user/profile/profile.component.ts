@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit() {
         this.userService.getProfile()
-            .pipe(delay(2000))
+            //.pipe(delay(2000))
             .subscribe(
             (res: any) => {
                 console.info(res);

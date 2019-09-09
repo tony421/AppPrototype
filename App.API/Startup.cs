@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.API.Filters;
 using App.API.Options;
 using App.Constants;
 using App.DatabaseContext;
@@ -31,73 +32,29 @@ namespace App.API
         }
 
         public IConfiguration Configuration { get; }
+        protected JwtAuthenticationOptions JwtAuthOptions { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // ========== Options ==========
             //
-            var jwtAuthenticationConfigSection = Configuration.GetSection("JwtAuthenticationOptions");
-            var jwtAuthenticationOptions = jwtAuthenticationConfigSection.Get<JwtAuthenticationOptions>();
-            services.Configure<JwtAuthenticationOptions>(jwtAuthenticationConfigSection);
-
-            services.Configure<IdentityOptions>(Configuration.GetSection("IdentityOptions"));
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-            //
-            // ========== Options ==========
+            this.AddOptions(services);
 
             // ========== DbContext ==========
             //
-            // Injecting MasterDbContext
-            services.AddDbContext<MasterDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString(DbContextConstants.MASTER_CONNECTION_STRING)));
-
-            // ***Convention Approach: injecting DbContext into DI
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Host=localhost;Database=AppPrototype_Master;Username=postgres;Password=password"));
-            // ***Innovative Approach: injecting DbContextFactory instead, and "DatabaseName" will be passed on to initialize DbContext in a controller's constructor
-            services.AddTransient<ApplicationDbContextFactory>();
-            //
-            // ========== DbContext ==========
+            this.AddDbContexts(services);
 
             // ========== Authentication ==========
             //
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<MasterDbContext>()
-                .AddDefaultTokenProviders();
-
-            // JWT Authentication Configuration
-            var securityKey = Encoding.UTF8.GetBytes(jwtAuthenticationOptions.SecurityKey);
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = false;
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(securityKey),
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-
-                };
-            });
-            //
-            // ========== Authentication ==========
+            this.AddAuthentication(services);
 
             // ========== Application Services ==========
-            //
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
-            //services.AddTransient<ISmsSender, AuthMessageSender>();
-            //
-            // ========== Application Services ==========
+            this.AddApplicationServices(services);
+
+            // ========== Filters ==========
+            this.AddFilters(services);
+
 
             services.AddCors();
 
@@ -107,8 +64,6 @@ namespace App.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var jwtAuthenticationOptions = Configuration.GetSection("JwtAuthenticationOptions").Get<JwtAuthenticationOptions>();
-
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
 
@@ -129,7 +84,7 @@ namespace App.API
             app.UseStaticFiles();
             
             app.UseCors(builder => {
-                builder.WithOrigins(jwtAuthenticationOptions.ClientUrl)
+                builder.WithOrigins(this.JwtAuthOptions.ClientUrl)
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
@@ -143,6 +98,75 @@ namespace App.API
                     name: "default",
                     template: "{controller}/{action}/{id?}");
             });
+        }
+
+        /// <summary>
+        /// This method must be called first
+        /// </summary>
+        private void AddOptions(IServiceCollection services)
+        {
+            var jwtAuthenticationConfigSection = Configuration.GetSection(ConstConfigurationOption.JWT_AUTH);
+            this.JwtAuthOptions = jwtAuthenticationConfigSection.Get<JwtAuthenticationOptions>();
+            services.Configure<JwtAuthenticationOptions>(jwtAuthenticationConfigSection);
+
+            services.Configure<IdentityOptions>(Configuration.GetSection(ConstConfigurationOption.IDENTITY));
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+        }
+
+        private void AddDbContexts(IServiceCollection services)
+        {
+            // Injecting MasterDbContext
+            services.AddDbContext<MasterDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString(ConstDbContext.CONN_STRING_MASTER)));
+
+            // ***Convention Approach: injecting DbContext into DI
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Host=localhost;Database=AppPrototype_Master;Username=postgres;Password=password"));
+            // ***Innovative Approach: injecting DbContextFactory instead, and "DatabaseName" will be passed on to initialize DbContext in a controller's constructor
+            services.AddTransient<ApplicationDbContextFactory>();
+        }
+
+        private void AddAuthentication(IServiceCollection services)
+        {
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<MasterDbContext>()
+                .AddDefaultTokenProviders();
+
+            // JWT Authentication Configuration
+            var securityKey = Encoding.UTF8.GetBytes(this.JwtAuthOptions.SecurityKey);
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(securityKey),
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+
+                };
+            });
+        }
+
+        private void AddFilters(IServiceCollection services)
+        {
+            services.AddScoped<CustomExceptionFilterAttribute>();
+            services.AddScoped<ViewModelNullValidationFilterAttribute>();
+        }
+
+        private void AddApplicationServices(IServiceCollection services)
+        {
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
         }
     }
 }

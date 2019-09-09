@@ -4,7 +4,7 @@ using System.Text;
 
 namespace App.Constants
 {
-    public class EnvironmentVariableConstants
+    public class ConstEnvironmentVariable
     {
         public const string ASPNETCORE_ENV = "ASPNETCORE_ENVIRONMENT";
     }

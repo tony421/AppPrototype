@@ -2,41 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.API.Filters;
 using App.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace App.API.Controllers
 {
     [Authorize]
     [ApiController]
+    [ServiceFilter(typeof(CustomExceptionFilterAttribute))] //***ServiceFilter attribute retrieves an instance of the AddHeaderResultServiceFilter filter from DI
     //[ValidateAntiForgeryToken]
     [Route("api/[controller]/[action]")]
     public class ControllerBase : Controller
     {
-        public OkObjectResult AppOkRequest(string message)
-        {
-            return Ok(new AppResult(message));
-        }
         public OkObjectResult AppOkRequest(IdentityResult identityResult)
         {
             return Ok(new AppResult(identityResult));
         }
+        public OkObjectResult AppOkRequest(string message)
+        {
+            return Ok(new AppResult(true, message));
+        }
         public OkObjectResult AppOkRequest(object dataObject)
         {
-            return Ok(new AppResult(dataObject));
+            return Ok(new AppResult(true, "", dataObject));
         }
         public OkObjectResult AppOkRequest(string message, object dataObject)
         {
             return Ok(new AppResult(true, message, dataObject));
         }
-        public OkObjectResult AppOkRequest(bool succeed, string message, object dataObject)
+
+        public OkObjectResult AppFailedRequest(string message)
         {
-            return Ok(new AppResult(succeed, message, dataObject));
+            return Ok(new AppResult(false, message));
         }
+        public OkObjectResult AppFailedRequest(object dataObject)
+        {
+            return Ok(new AppResult(false, "", dataObject));
+        }
+        public OkObjectResult AppFailedRequest(string message, object dataObject)
+        {
+            return Ok(new AppResult(false, message, dataObject));
+        }
+
 
         public BadRequestObjectResult AppBadRequest(string error)
         {

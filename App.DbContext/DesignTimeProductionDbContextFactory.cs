@@ -19,7 +19,7 @@ namespace App.DatabaseContext
 
         public override string GetConnectionString()
         {
-            return DbContextConstants.PRODUCTION_MASTER_CONNECTION_STRING;
+            return ConstDbContext.CONN_STRING_PRODUCTION_MASTER;
         }
     }
 }

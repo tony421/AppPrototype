@@ -20,9 +20,21 @@ export class LoginComponent implements OnInit {
     onSubmit() {
         this.service.login().subscribe(
             (res: any) => {
-                localStorage.setItem("token", res.data);
-                this.router.navigateByUrl("/user/profile");
-                //this.toast.info(res.token);
+                if (res.succeeded) {
+                    localStorage.setItem("token", res.data);
+                    this.router.navigateByUrl("/user/profile");
+                    //this.toast.info(res.token);
+                }
+                else {
+                    res.messages.forEach(i => {
+                        let msg;
+                        if (i.code)
+                            msg = '[' + i.code + '] ' + i.description;
+                        else
+                            msg = i.description;
+                        this.toast.warning(msg);
+                    });
+                }
             }
             , err => {
                 this.toast.warning(err);

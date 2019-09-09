@@ -13,7 +13,7 @@ namespace App.DatabaseContext
         {
             if (config != null)
             {
-                string connString = config.GetConnectionString(DbContextConstants.MASTER_CONNECTION_STRING);
+                string connString = config.GetConnectionString(ConstDbContext.CONN_STRING_MASTER);
                 if (!string.IsNullOrWhiteSpace(connString))
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<MasterDbContext>();
@@ -28,7 +28,7 @@ namespace App.DatabaseContext
 
         public ProductionDbContext CreateProductionContext(IConfiguration config)
         {
-            return CreateProductionContext(config, DbContextConstants.PRODUCTION_MASTER_DATABASE);
+            return CreateProductionContext(config, ConstDbContext.DB_NAME_PRODUCTION_MASTER);
         }
         public ProductionDbContext CreateProductionContext(IConfiguration config, string databaseName)
         {
@@ -36,7 +36,7 @@ namespace App.DatabaseContext
             {
                 if (!string.IsNullOrWhiteSpace(databaseName))
                 {
-                    string productionConnFormat = config.GetConnectionString(DbContextConstants.PRODUCTION_FORMAT_CONNECTION_STRING);
+                    string productionConnFormat = config.GetConnectionString(ConstDbContext.CONN_STRING_PRODUCTION_FORMAT);
                     if (!string.IsNullOrWhiteSpace(productionConnFormat))
                     {
                         string connString = string.Format(productionConnFormat, databaseName);
