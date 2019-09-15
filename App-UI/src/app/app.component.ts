@@ -13,8 +13,8 @@ export class AppComponent {
     title = 'App Components';
     isLoading$ = this.loadingService.isLoading;
 
-    constructor(private route: Router, private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
-        this.route.events.subscribe(event => {
+    constructor(private router: Router, private loadingService: LoadingService, private cdRef: ChangeDetectorRef) {
+        this.router.events.subscribe(event => {
             switch (true) {
                 case event instanceof NavigationStart:
                     //console.info("NavigationStart");

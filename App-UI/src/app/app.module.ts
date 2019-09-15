@@ -30,6 +30,7 @@ import { HeroDetailsComponent } from './components/hero/hero-details/hero-detail
 import { HeroService } from './services/hero.service';
 import { LoadingService } from './services/loading.service';
 import { AppLoadingInterceptor } from './app-loading-interceptor';
+import { BaseComponent } from './components/base/base.component';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 
@@ -44,7 +45,8 @@ import { AppLoadingInterceptor } from './app-loading-interceptor';
         TopbarComponent,
         HeroComponent,
         HeroListComponent,
-        HeroDetailsComponent
+        HeroDetailsComponent,
+        BaseComponent
     ],
     imports: [
         BrowserModule,
@@ -53,7 +55,11 @@ import { AppLoadingInterceptor } from './app-loading-interceptor';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         FontAwesomeModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: "toast-bottom-center",
+            progressBar: true,
+            closeButton: true
+        }),
         NgxLoadingModule.forRoot({
             animationType: ngxLoadingAnimationTypes.threeBounce,
             backdropBorderRadius: '4px',

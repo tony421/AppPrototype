@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { BaseComponent } from 'src/app/components/base/base.component';
 
 
 @Component({
@@ -9,9 +10,9 @@ import { Router } from '@angular/router';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent implements OnInit {
 
-    constructor(private service: UserService, private toast: ToastrService, private router: Router) { }
+    constructor(private service: UserService) { super(); }
 
     ngOnInit() {
 

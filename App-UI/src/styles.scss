@@ -183,10 +183,22 @@ ul ul a {
     }
 }
 
-.dropdown-toggle::after { // Small triangle next to dropdown menu items
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
+.dropdown-toggle { // Small triangle next to dropdown menu items
+    &.collapsed::after, &::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+    
+    &.collapsed::after {
+        border-top: .3em solid;
+        border-bottom: 0;
+    }
+
+    &::after {
+        border-top: 0;
+        border-bottom: .3em solid;
+    }
 }
