@@ -13,20 +13,20 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit() {
         $(document).ready(function () {
-            $("#sidebar").mCustomScrollbar({
+            $("#sidebar-overlay").mCustomScrollbar({
                 theme: "minimal"
             });
 
-            $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar-overlay #dismiss, .overlay').on('click', function () {
                 // hide sidebar
-                $('#sidebar').removeClass('active');
+                $('#sidebar-overlay').removeClass('active');
                 // hide overlay
                 $('.overlay').removeClass('active');
             });
 
             $('#sidebarCollapse').on('click', function () {
                 // open navbar
-                $('#sidebar').addClass('active');
+                $('#sidebar-overlay').addClass('active');
                 // fade in the overlay
                 $('.overlay').addClass('active');
                 // close dropdowns

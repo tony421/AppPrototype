@@ -31,6 +31,7 @@ import { HeroService } from './services/hero.service';
 import { LoadingService } from './services/loading.service';
 import { AppLoadingInterceptor } from './app-loading-interceptor';
 import { BaseComponent } from './components/base/base.component';
+import { SidebarFixComponent } from './nav/sidebar-fix/sidebar-fix.component';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 
@@ -46,7 +47,8 @@ import { BaseComponent } from './components/base/base.component';
         HeroComponent,
         HeroListComponent,
         HeroDetailsComponent,
-        BaseComponent
+        BaseComponent,
+        SidebarFixComponent
     ],
     imports: [
         BrowserModule,

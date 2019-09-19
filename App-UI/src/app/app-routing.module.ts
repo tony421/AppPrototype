@@ -20,7 +20,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'hero', data: { breadcrumb: "Hero" }, component: HeroListComponent, children: [
+        path: 'hero', data: { breadcrumb: "Hero" }, component: HeroComponent, children: [
             { path: 'hero-list', data: { breadcrumb: "Hero List" }, component: HeroListComponent },
             { path: 'hero-details', data: { breadcrumb: "Hero Details" }, component: HeroDetailsComponent },
         ]
