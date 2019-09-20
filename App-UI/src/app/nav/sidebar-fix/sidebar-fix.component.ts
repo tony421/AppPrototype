@@ -29,6 +29,8 @@ export class SidebarFixComponent implements OnInit {
                 $('#sidebar-fix').toggleClass('active');
                 // Reduce content width
                 $('#app-content').toggleClass('active');
+
+                $('#titlebar').toggleClass('active');
             });
         });
     }
