@@ -12,6 +12,8 @@
             <!-- Page Content -->
             <div id="app-content">
                 <div class="container-fluid">
+                    <app-titlebar></app-titlebar>
+
                     <router-outlet></router-outlet>
     
                     <!-- without running change-detection explicitly, binding [show] to isLoading$ causes the error -->

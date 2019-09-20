@@ -13,7 +13,7 @@ $z-index-overlay: 9999;
 $z-index-topbar: 999;
 $z-index-content: 999;
 
-$topbar-height: 100px;
+$topbar-height: 92px;
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -96,6 +96,22 @@ ul ul a {
         padding: { top: 8px; bottom: 8px; }
         box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     }
+}
+
+#titlebar {
+    @include make-row();
+
+    position: sticky;
+    z-index: $zindex-sticky;
+    top: $topbar-height;
+    display: flex;
+    height: 64px;
+    padding: 5px 16px;
+    background-color: #fff;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 #app-content {
